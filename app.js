@@ -18,6 +18,7 @@ function go(n){
   steps.forEach((id,i)=>$("#"+id).hidden=i!==n-1);
   [...$("#rail").children].forEach((li,i)=>{li.className=i<n-1?"done":i===n-1?"on":""});
   if(n===4) resetTube();
+  if(n===2||n===3) preloadIntros();
   window.scrollTo({top:0,behavior:"smooth"});
 }
 document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g&&!state.busy)go(+g.dataset.go)});
@@ -59,6 +60,15 @@ $("#deityGrid").addEventListener("click",e=>{const b=e.target.closest("[data-dei
 
 /* ---------- 神明過場影片：選完神明後全螢幕播放，播完進入搖籤 ---------- */
 const INTRO_VIDEO={"濟公師父":"video/jigong.mp4","天上聖母":"video/mazu.mp4","三太子":"video/taizi.mp4","土地公":"video/tudigong.mp4"};
+/* 進入「問事」「神明」步驟時就在背景把四支影片下載到手機，點神明時直接本機播放，不會邊下載邊卡 */
+const introCache={};
+function preloadIntros(){
+  for(const [d,src] of Object.entries(INTRO_VIDEO)){
+    if(introCache[d]) continue;
+    introCache[d]="loading";
+    fetch(src).then(r=>{if(!r.ok)throw 0;return r.blob()}).then(b=>{introCache[d]=URL.createObjectURL(b)}).catch(()=>{delete introCache[d]});
+  }
+}
 function playIntro(deity){
   return new Promise(res=>{
     const ov=$("#intro"),v=$("#introVid"),src=INTRO_VIDEO[deity];
@@ -68,7 +78,7 @@ function playIntro(deity){
       ov.classList.add("out");
       setTimeout(()=>{ov.hidden=true;ov.classList.remove("out");v.removeAttribute("src");try{v.load()}catch(_){};state.busy=false;res()},matchMedia("(prefers-reduced-motion: reduce)").matches?0:400)};
     state.busy=true;
-    v.poster=src.replace(".mp4",".jpg");v.src=src;
+    const cached=introCache[deity];v.poster=src.replace(".mp4",".jpg");v.src=(cached&&cached!=="loading")?cached:src;
     $("#introCap").textContent=`${deity}　降臨`;
     ov.hidden=false;
     v.onended=finish;v.onerror=finish;$("#introSkip").onclick=finish;
