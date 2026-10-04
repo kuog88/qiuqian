@@ -19,11 +19,10 @@ function doPost(e) {
       sh.appendRow(HEADERS);
       sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
       sh.setFrozenRows(1);
-      sh.getRange('C:E').setNumberFormat('@'); // 生日、性別、電話以文字保存，電話開頭的 0 不會消失
     }
     sh.appendRow([
       new Date(),
-      clean(d.name, 20), clean(d.birth, 10), clean(d.gender, 2), clean(d.phone, 20),
+      clean(d.name, 20), text(d.birth, 10), clean(d.gender, 2), text(d.phone, 20),
       clean(d.category, 4), clean(d.deity, 6), clean(d.season, 8),
       num(d.poemNo), clean(d.level, 2), num(d.score), clean(d.bazi, 12), num(d.renGe),
     ]);
@@ -45,6 +44,10 @@ function clean(v, max) {
   let s = String(v == null ? '' : v).slice(0, max);
   if (/^[=+\-@]/.test(s)) s = "'" + s;
   return s;
+}
+// 以文字保存（開頭加 ' ），避免電話開頭的 0 消失、生日被轉成日期
+function text(v, max) {
+  return "'" + String(v == null ? '' : v).slice(0, max);
 }
 function num(v) {
   const n = Number(v);
