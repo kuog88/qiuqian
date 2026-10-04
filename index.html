@@ -263,6 +263,21 @@ body{font-size:18px;line-height:1.8;padding-inline:14px}
 table{font-size:15px}
 th,td{padding:10px 12px}
 .admin-btn{font-size:16px;padding:8px 16px;min-height:44px}
+/* 籤詩直書：每句一欄、由右至左 */
+.poem div{display:flex;flex-direction:row-reverse;justify-content:center;writing-mode:horizontal-tb;gap:clamp(16px,5vw,28px);line-height:1;letter-spacing:0;padding:18px clamp(16px,5vw,30px);background:none;max-width:100%}
+.poem p{margin:0;display:flex;flex-direction:column;align-items:center;gap:.14em}
+.poem p+p{border-right:1px solid var(--gold-soft);padding-right:clamp(16px,5vw,28px);margin-right:calc(-1 * clamp(16px,5vw,28px) + clamp(16px,5vw,28px))}
+.poem span{display:block;width:1em;text-align:center}
+/* 籤等標籤改為橫書，避免被裁切 */
+.slip-head{align-items:center}
+.level{writing-mode:horizontal-tb;white-space:nowrap;letter-spacing:.2em;padding:8px 10px 8px 14px}
+/* 搖籤畫面：籤筒縮小、留白減少，下方放大按鈕 */
+.tubebox{width:min(190px,50vw)}
+.stage{gap:10px;padding-top:0}
+.pray{font-size:19px;line-height:1.75}
+#s4{gap:14px}
+.shake-count:empty{display:none}
+#shakeBtn{width:100%}
 @media (max-width:360px){body{padding-inline:12px}.choice b{font-size:26px}.choice.deity b{font-size:20px}.panel{padding:20px 14px}}
 [hidden]{display:none!important}
 body{margin:0}
@@ -344,7 +359,7 @@ img{max-width:100%}
     <p class="pray" id="prayLine"></p>
     <div class="stage">
       <button class="tubebox" id="tubeBtn" type="button" aria-label="點擊籤筒開始搖籤">
-        <svg viewBox="0 -100 240 510" aria-hidden="true">
+        <svg viewBox="0 -50 240 450" aria-hidden="true">
           <defs>
             <linearGradient id="wood" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0" stop-color="#3b1f12"/><stop offset=".22" stop-color="#7a4426"/>
@@ -362,7 +377,7 @@ img{max-width:100%}
               <feComposite in2="SourceGraphic" operator="in"/>
             </filter>
             <filter id="carve"><feDropShadow dx="0" dy="1.2" stdDeviation=".4" flood-color="#000" flood-opacity=".7"/></filter>
-            <clipPath id="mouth"><rect x="40" y="-110" width="160" height="200"/></clipPath>
+            <clipPath id="mouth"><rect x="40" y="-60" width="160" height="150"/></clipPath>
           </defs>
 
           <g id="tubeAll">
@@ -420,7 +435,8 @@ img{max-width:100%}
           </g>
         </svg>
       </button>
-      <div class="shake-count" id="shakeCount" aria-live="polite">點擊籤筒開始搖籤</div>
+      <div class="shake-count" id="shakeCount" aria-live="polite"></div>
+      <button class="btn" type="button" id="shakeBtn">點這裡搖籤</button>
     </div>
     <button class="ghost" type="button" data-go="3" id="s4Back">← 改請示其他神明</button>
   </section>

@@ -66,11 +66,11 @@ function clack(){try{actx=actx||new (window.AudioContext||window.webkitAudioCont
     o.connect(g).connect(actx.destination);o.start(n+k*.035);o.stop(n+k*.035+.07)}}catch(_){}}
 function resetTube(){
   ["#lid","#stick","#tubeAll"].forEach(s=>{const el=$(s);el.getAnimations().forEach(a=>a.cancel());el.style.transform="";el.style.opacity=""});
-  $("#stickNo").textContent="";$("#shakeCount").textContent=POEMS?"點擊籤筒開始搖籤":"籤詩庫載入中…";$("#s4Back").hidden=false;state.busy=false;
+  $("#stickNo").textContent="";$("#shakeCount").textContent=POEMS?"":"籤詩庫載入中…";$("#s4Back").hidden=false;$("#shakeBtn").hidden=false;state.busy=false;
 }
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
-$("#tubeBtn").addEventListener("click",async()=>{
-  if(state.busy||!POEMS) return; state.busy=true; $("#s4Back").hidden=true;
+const shake=async()=>{
+  if(state.busy||!POEMS) return; state.busy=true; $("#s4Back").hidden=true; $("#shakeBtn").hidden=true;
   const svg=$("#tubeBtn svg"), N=5+(Math.random()<.5?0:1), D=reduce?120:340;
   for(let i=1;i<=N;i++){
     $("#shakeCount").innerHTML=`搖籤中 <b>${i}</b> / ${N}`; clack();
@@ -84,12 +84,14 @@ $("#tubeBtn").addEventListener("click",async()=>{
   $("#shakeCount").textContent="開蓋…";
   await $("#lid").animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:"translate(0,-34px) rotate(-4deg)",opacity:1,offset:.4},{transform:"translate(90px,-60px) rotate(24deg)",opacity:0}],
     {duration:reduce?200:900,easing:"ease-in-out",fill:"forwards"}).finished;
-  await $("#stick").animate([{transform:"translateY(0)"},{transform:"translateY(-100px)"}],{duration:reduce?200:900,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"}).finished;
+  await $("#stick").animate([{transform:"translateY(0)"},{transform:"translateY(-76px)"}],{duration:reduce?200:900,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"}).finished;
   $("#shakeCount").innerHTML=`得 <b>第${cnNum(poem.no)}籤</b>`;
   await wait(reduce?300:1100);
   renderResult(poem,a); go(5); state.busy=false;
   saveRecord(poem,a);
-});
+};
+$("#tubeBtn").addEventListener("click",shake);
+$("#shakeBtn").addEventListener("click",shake);
 
 /* ---------- 結果 ---------- */
 function renderResult(poem,a){
@@ -121,7 +123,7 @@ function renderResult(poem,a){
         <small>${esc(p.name)}${title}・${esc(state.deity)}所賜・${a.season.name}季${a.season.term}・${a.today.y}/${a.today.m}/${a.today.d}</small></div>
       <div class="level${lvClass}">${a.level}</div>
     </div>
-    <div class="poem"><div>${poem.lines.map(l=>`<p>${l}</p>`).join("")}</div></div>
+    <div class="poem"><div>${poem.lines.map(l=>`<p>${[...l].map(c=>`<span>${c}</span>`).join("")}</p>`).join("")}</div></div>
     <div class="sec"><h3>籤意白話</h3><p>${poem.meaning}</p></div>
     <div class="sec"><h3>${esc(state.deity)}示下</h3>
       <p>${DEITY_SAY[state.deity]}：${a.notes.season}${a.notes.star}${a.notes.day}${a.notes.gender}</p></div>
@@ -203,7 +205,7 @@ $("#csvBtn").addEventListener("click",async()=>{
 
 /* ---------- 啟動 ---------- */
 Promise.all([fetch("poems.json").then(r=>r.json()),fetch("strokes.json").then(r=>r.json())])
-  .then(([p,s])=>{POEMS=p;QQ.loadStrokes(s);if(!$("#s4").hidden&&!state.busy)$("#shakeCount").textContent="點擊籤筒開始搖籤"})
+  .then(([p,s])=>{POEMS=p;QQ.loadStrokes(s);if(!$("#s4").hidden&&!state.busy)$("#shakeCount").textContent=""})
   .catch(()=>{$("#shakeCount").textContent="籤詩庫載入失敗，請重新整理頁面。"});
 go(1);
 if(window.claude&&claude.use) initStore();
