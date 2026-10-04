@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="五甲港口宮線上求籤：依節氣時令、生辰八字、姓名五格推算出籤。">
+<title>五甲港口宮線上求籤</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+/* Layout: one narrow altar column; each ritual step is a panel that replaces the last, the tube is the centrepiece of step 4. */
+:root{
+  --bg:#f3ece1; --surface:#fffaf2; --line:#dccbb2; --fg:#2b1a12; --muted:#7a6553;
+  --red:#a92f1c; --red-ink:#fff6ea; --gold:#946512; --gold-soft:#e9d3a3;
+  --shadow:0 1px 0 rgba(80,40,10,.06),0 8px 24px -14px rgba(80,40,10,.35);
+  --f-carve:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-poem:"LXGW WenKai TC","Kaiti TC","DFKai-SB","Noto Serif TC",serif;
+  --f-ui:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1a110d; --surface:#251812; --line:#4a3226; --fg:#f2e6d2; --muted:#b09a82;
+  --red:#cf4a2c; --red-ink:#fff4e6; --gold:#dcae55; --gold-soft:#4a3618;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.8); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1a110d; --surface:#251812; --line:#4a3226; --fg:#f2e6d2; --muted:#b09a82;
+  --red:#cf4a2c; --red-ink:#fff4e6; --gold:#dcae55; --gold-soft:#4a3618;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.8); color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:15px;line-height:1.7;
+  padding-inline:16px;padding-block:0 48px;
+  background-image:radial-gradient(ellipse at 50% -10%,color-mix(in srgb,var(--red) 14%,transparent),transparent 60%);}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+
+/* header plaque */
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:20px}
+.plaque{display:flex;align-items:center;gap:12px}
+.plaque .seal{width:44px;height:44px;border-radius:8px;background:var(--red);color:var(--red-ink);
+  display:grid;place-items:center;font-family:var(--f-carve);font-weight:900;font-size:22px;
+  box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--red-ink) 35%,transparent)}
+.plaque h1{margin:0;font-family:var(--f-carve);font-weight:900;font-size:22px;letter-spacing:.12em;line-height:1.2}
+.plaque small{display:block;color:var(--muted);font-size:12px;letter-spacing:.2em}
+.admin-btn{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--fg);
+  border-radius:999px;padding:6px 14px;cursor:pointer}
+
+/* step rail */
+.rail{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;list-style:none;margin:0;padding:0}
+.rail li{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--muted);letter-spacing:.1em}
+.rail li::before{content:"";width:100%;height:4px;border-radius:2px;background:var(--line)}
+.rail li.done::before{background:var(--gold)}
+.rail li.on{color:var(--fg);font-weight:700}
+.rail li.on::before{background:var(--red)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:18px}
+.panel h2{margin:0;font-family:var(--f-carve);font-size:20px;letter-spacing:.08em;text-wrap:balance}
+.panel .lede{margin:-8px 0 0;color:var(--muted);font-size:14px}
+
+/* form */
+form{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.field .lab{font-size:13px;font-weight:500;letter-spacing:.06em}
+.field input[type=text],.field input[type=tel],.field input[type=date]{
+  font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--fg);width:100%}
+.field input:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+.seg{display:flex;gap:8px}
+.seg label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border:1px solid var(--line);
+  border-radius:8px;background:var(--bg);cursor:pointer;font-size:15px}
+.seg input{accent-color:var(--red)}
+.seg label:has(input:checked){border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--bg))}
+.hint{font-size:12.5px;color:var(--muted)}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:0 0 10px}
+.grid5 div{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;min-width:0}
+.grid5 small{font-size:11.5px;color:var(--muted);letter-spacing:.1em}
+.grid5 b{font-size:18px;font-variant-numeric:tabular-nums;line-height:1.2}
+.grid5 em{font-style:normal;font-size:11.5px}
+.grid5 .ji1{color:var(--red)} .grid5 .ji3{color:var(--muted)}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 10px}
+.pillars div{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:8px 4px;text-align:center}
+.pillars small{display:block;font-size:11.5px;color:var(--muted)}
+.pillars b{font-family:var(--f-carve);font-size:20px;letter-spacing:.1em}
+.pillars .dm{border-color:var(--red)}
+.season{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;padding:0;list-style:none}
+.season li{font-size:12.5px;border-radius:6px;padding:2px 9px;border:1px solid var(--line);background:var(--bg)}
+.season li.hot{background:var(--red);border-color:var(--red);color:var(--red-ink)}
+.season li.warm{border-color:var(--gold);color:var(--gold)}
+.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 10px}
+.stage-card{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:10px;display:flex;flex-direction:column;gap:4px;min-width:0;font-size:13.5px}
+.stage-card p{margin:0}
+.stage-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;flex-wrap:wrap}
+.stage-top b{font-family:var(--f-carve);font-size:16px;letter-spacing:.1em}
+.stage-top span,.stage-num{font-size:12px;color:var(--muted)}
+.stage-num em{font-style:normal;font-weight:700}
+.stage-card.l1 .stage-num em{color:var(--red)} .stage-card.l3 .stage-num em{color:var(--muted)}
+.stage-card.l1{border-top:3px solid var(--red)} .stage-card.l2{border-top:3px solid var(--gold)} .stage-card.l3{border-top:3px solid var(--muted)}
+.stage-desc{font-family:var(--f-poem);font-size:15px;font-weight:700}
+.years{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:6px}
+.years li{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center;border:1px solid var(--line);border-left:3px solid var(--muted);border-radius:8px;padding:8px 10px;background:var(--bg)}
+.years li.good{border-left-color:var(--red)}
+.years .yr{display:flex;flex-direction:column;line-height:1.3}
+.years .yr b{font-variant-numeric:tabular-nums;font-size:16px}
+.years .yr span{font-size:12px;color:var(--muted)}
+.ytags{display:flex;gap:4px;flex-wrap:wrap}
+.ytags i{font-style:normal;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;border:1px solid var(--line)}
+.years li.good .ytags i{background:var(--red);color:var(--red-ink);border-color:var(--red)}
+.years li p{grid-column:1/-1;margin:0;font-size:13.5px}
+@media (max-width:520px){.stages{grid-template-columns:1fr}}
+.consent{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--muted)}
+.consent input{margin-top:5px;accent-color:var(--red)}
+.err{color:var(--red);font-size:13px;min-height:1em;margin:0}
+
+.btn{font:inherit;font-weight:700;font-size:16px;letter-spacing:.2em;padding:12px 18px;border-radius:10px;border:0;
+  background:var(--red);color:var(--red-ink);cursor:pointer}
+.btn:focus-visible,.choice:focus-visible,.ghost:focus-visible,.admin-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.ghost{font:inherit;font-size:14px;background:none;border:0;color:var(--muted);cursor:pointer;padding:6px 0;align-self:flex-start}
+.ghost:hover{color:var(--fg)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+
+/* choice grids */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{font:inherit;text-align:left;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:12px;
+  padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:border-color .15s,transform .15s}
+.choice:hover{border-color:var(--gold);transform:translateY(-1px)}
+.choice b{font-family:var(--f-carve);font-size:24px;letter-spacing:.12em;line-height:1.3}
+.choice span{font-size:12.5px;color:var(--muted)}
+.choice .seal{width:40px;height:40px;border-radius:50%;border:2px solid var(--red);color:var(--red);display:grid;place-items:center;
+  font-family:var(--f-carve);font-weight:900;font-size:19px;margin-bottom:6px}
+.choice.deity b{font-size:20px}
+
+/* tube stage */
+.stage{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:6px}
+.tubebox{width:min(240px,64vw);cursor:pointer;-webkit-tap-highlight-color:transparent;border:0;background:none;padding:0}
+.tubebox svg{width:100%;height:auto;display:block;overflow:visible}
+.tubebox:focus-visible{outline:2px dashed var(--gold);outline-offset:6px;border-radius:12px}
+.shake-count{font-family:var(--f-carve);font-size:15px;letter-spacing:.2em;color:var(--muted);min-height:1.6em;text-align:center}
+.shake-count b{color:var(--red);font-size:20px}
+.pray{text-align:center;font-family:var(--f-poem);font-size:16px;color:var(--fg);margin:0;text-wrap:balance}
+#lid,#stick{transform-box:fill-box;transform-origin:50% 100%}
+
+/* result */
+.slip{display:flex;flex-direction:column;gap:18px}
+.slip-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.slip-no{font-family:var(--f-carve);font-weight:900;font-size:26px;letter-spacing:.1em;line-height:1.2}
+.slip-no small{display:block;font-family:var(--f-ui);font-weight:400;font-size:12.5px;color:var(--muted);letter-spacing:.08em}
+.level{flex:none;font-family:var(--f-carve);font-weight:900;font-size:20px;color:var(--red-ink);background:var(--red);
+  border-radius:6px;padding:6px 10px;letter-spacing:.15em;writing-mode:vertical-rl}
+.level.mid{background:var(--gold)}
+.level.low{background:var(--muted)}
+.poem{display:flex;justify-content:center;padding:6px 0}
+.poem div{writing-mode:vertical-rl;font-family:var(--f-poem);font-weight:700;font-size:clamp(22px,6vw,28px);letter-spacing:.18em;
+  line-height:1;display:flex;flex-direction:row-reverse;gap:clamp(12px,4vw,22px);
+  padding:18px clamp(14px,5vw,28px);border:1px solid var(--gold-soft);border-radius:4px;
+  background:repeating-linear-gradient(90deg,transparent 0 calc(1em + 18px),color-mix(in srgb,var(--gold) 18%,transparent) calc(1em + 18px) calc(1em + 19px))}
+.poem p{margin:0}
+.sec h3{margin:0 0 6px;font-family:var(--f-carve);font-size:15px;letter-spacing:.2em;color:var(--gold)}
+.sec p{margin:0;max-width:65ch}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;padding:0;list-style:none}
+.chips li{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--bg)}
+.chips li b{font-weight:700}
+.meter{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.meter .bar{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.meter .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--red))}
+.meter b{font-variant-numeric:tabular-nums;color:var(--fg)}
+.yiji{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.yiji div{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg)}
+.yiji h4{margin:0 0 4px;font-family:var(--f-carve);font-size:18px}
+.yiji .yi h4{color:var(--red)} .yiji .ji h4{color:var(--muted)}
+.yiji ul{margin:0;padding:0;list-style:none;font-size:14px}
+.note{font-size:12px;color:var(--muted);margin:0}
+.saved{font-size:12px;color:var(--gold)}
+
+/* admin */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:var(--bg);font-weight:700;position:sticky;top:0}
+td.num{font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);font-size:14px;text-align:center;padding:24px 8px}
+
+@media (max-width:380px){.grid2{gap:8px}.choice{padding:14px 10px}.choice b{font-size:21px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+[hidden]{display:none!important}
+body{margin:0}
+img{max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="plaque">
+      <div class="seal" aria-hidden="true">籤</div>
+      <div><h1>五甲港口宮</h1><small>線上求籤・誠心則靈</small></div>
+    </div>
+    <button class="admin-btn" id="adminBtn" type="button" hidden>信眾紀錄</button>
+  </header>
+
+  <ol class="rail" id="rail" aria-label="求籤步驟">
+    <li>登記</li><li>問事</li><li>神明</li><li>搖籤</li><li>籤詩</li>
+  </ol>
+
+  <!-- 1 登記 -->
+  <section class="panel" id="s1">
+    <h2>信眾登記</h2>
+    <p class="lede">求籤前請先報上姓名與生辰，神明方知是誰來問事。</p>
+    <form id="profileForm" novalidate>
+      <div class="field"><label for="fName">姓名</label>
+        <input type="text" id="fName" autocomplete="name" maxlength="20" placeholder="例：陳美玲">
+        <span class="hint">請填中文本名，用於姓名學五格推算；填暱稱也能求籤，但會略過姓名學。</span></div>
+      <div class="field"><label for="fBirth">出生年月日（國曆）</label>
+        <input type="date" id="fBirth" min="1900-01-01"></div>
+      <div class="field"><label for="fPhone">電話</label>
+        <input type="tel" id="fPhone" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="例：0912345678"></div>
+      <div class="field"><span class="lab" id="gLab">性別</span>
+        <div class="seg" role="radiogroup" aria-labelledby="gLab">
+          <label><input type="radio" name="gender" id="gM" value="男">男</label>
+          <label><input type="radio" name="gender" id="gF" value="女">女</label>
+        </div></div>
+      <label class="consent"><input type="checkbox" id="fConsent">我同意以上資料由宮方紀錄，僅供服務聯繫使用。</label>
+      <p class="err" id="formErr" role="alert"></p>
+      <button class="btn" type="submit">登記完成，開始問事</button>
+    </form>
+  </section>
+
+  <!-- 2 問事 -->
+  <section class="panel" id="s2" hidden>
+    <h2>所問何事</h2>
+    <p class="lede">請選擇要請示的類別。每類各有男女籤各二十首，依當下時令與您的生辰、姓名推算出籤。</p>
+    <div class="grid2" id="catGrid">
+      <button class="choice" type="button" data-cat="career"><b>事業</b><span>工作・升遷・創業・考試</span></button>
+      <button class="choice" type="button" data-cat="health"><b>健康</b><span>身體・調養・病痛・平安</span></button>
+      <button class="choice" type="button" data-cat="love"><b>感情</b><span>姻緣・伴侶・婚事・人際</span></button>
+      <button class="choice" type="button" data-cat="fortune"><b>運勢</b><span>整體・財運・出入・家運</span></button>
+    </div>
+    <button class="ghost" type="button" data-go="1">← 修改登記資料</button>
+  </section>
+
+  <!-- 3 神明 -->
+  <section class="panel" id="s3" hidden>
+    <h2>請示神明</h2>
+    <p class="lede">選擇您想請示的神明，誠心稟告所求之事。</p>
+    <div class="grid2" id="deityGrid">
+      <button class="choice deity" type="button" data-deity="濟公師父"><span class="seal" aria-hidden="true">濟</span><b>濟公師父</b><span>降龍羅漢・扶危濟困</span></button>
+      <button class="choice deity" type="button" data-deity="天上聖母"><span class="seal" aria-hidden="true">媽</span><b>天上聖母</b><span>媽祖娘娘・護佑四方</span></button>
+      <button class="choice deity" type="button" data-deity="三太子"><span class="seal" aria-hidden="true">吒</span><b>三太子</b><span>中壇元帥・驅邪保安</span></button>
+      <button class="choice deity" type="button" data-deity="土地公"><span class="seal" aria-hidden="true">福</span><b>土地公</b><span>福德正神・守護一方</span></button>
+    </div>
+    <button class="ghost" type="button" data-go="2">← 重選類別</button>
+  </section>
+
+  <!-- 4 搖籤 -->
+  <section class="panel" id="s4" hidden>
+    <h2 id="s4Title">搖籤</h2>
+    <p class="pray" id="prayLine"></p>
+    <div class="stage">
+      <button class="tubebox" id="tubeBtn" type="button" aria-label="點擊籤筒開始搖籤">
+        <svg viewBox="0 -130 240 540" aria-hidden="true">
+          <defs>
+            <linearGradient id="wood" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#3b1f12"/><stop offset=".22" stop-color="#7a4426"/>
+              <stop offset=".45" stop-color="#9a5a33"/><stop offset=".7" stop-color="#6e3a1f"/><stop offset="1" stop-color="#2e170d"/>
+            </linearGradient>
+            <linearGradient id="woodLip" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#a8673d"/><stop offset=".5" stop-color="#7a4426"/><stop offset="1" stop-color="#4a2716"/>
+            </linearGradient>
+            <linearGradient id="bamboo" x1="0" x2="1">
+              <stop offset="0" stop-color="#b98a4e"/><stop offset=".5" stop-color="#e2c088"/><stop offset="1" stop-color="#a77a40"/>
+            </linearGradient>
+            <filter id="grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012" numOctaves="3" seed="7"/>
+              <feColorMatrix values="0 0 0 0 0.1  0 0 0 0 0.05  0 0 0 0 0.02  0 0 0 .55 -.12"/>
+              <feComposite in2="SourceGraphic" operator="in"/>
+            </filter>
+            <filter id="carve"><feDropShadow dx="0" dy="1.2" stdDeviation=".4" flood-color="#000" flood-opacity=".7"/></filter>
+            <clipPath id="mouth"><rect x="40" y="-140" width="160" height="230"/></clipPath>
+          </defs>
+
+          <g id="tubeAll">
+            <!-- sticks inside the mouth -->
+            <g clip-path="url(#mouth)">
+              <g id="sticks">
+                <rect x="66" y="40" width="7" height="60" rx="2" fill="url(#bamboo)"/>
+                <rect x="82" y="30" width="7" height="70" rx="2" fill="url(#bamboo)"/>
+                <rect x="98" y="44" width="7" height="56" rx="2" fill="url(#bamboo)"/>
+                <rect x="132" y="34" width="7" height="66" rx="2" fill="url(#bamboo)"/>
+                <rect x="148" y="46" width="7" height="54" rx="2" fill="url(#bamboo)"/>
+                <rect x="164" y="38" width="7" height="62" rx="2" fill="url(#bamboo)"/>
+              </g>
+              <g id="stick">
+                <rect x="109" y="26" width="22" height="200" rx="3" fill="url(#bamboo)"/>
+                <rect x="109" y="26" width="22" height="22" rx="3" fill="#a92f1c"/>
+                <text id="stickNo" x="120" y="66" fill="#5a2a12" font-family="Noto Serif TC,serif" font-weight="900" font-size="15" text-anchor="middle"></text>
+              </g>
+            </g>
+
+            <!-- base rings -->
+            <rect x="28" y="364" width="184" height="30" rx="9" fill="url(#woodLip)"/>
+            <rect x="28" y="364" width="184" height="30" rx="9" fill="#000" filter="url(#grain)" opacity=".6"/>
+            <rect x="34" y="350" width="172" height="18" rx="6" fill="url(#wood)"/>
+            <!-- body -->
+            <rect x="40" y="148" width="160" height="206" fill="url(#wood)"/>
+            <rect x="40" y="148" width="160" height="206" fill="#000" filter="url(#grain)"/>
+            <!-- relief panel -->
+            <rect x="74" y="172" width="92" height="166" rx="2" fill="#000" opacity=".18"/>
+            <rect x="74" y="172" width="92" height="166" rx="2" fill="none" stroke="#2a140a" stroke-opacity=".55"/>
+            <rect x="77" y="175" width="86" height="160" rx="2" fill="none" stroke="#c48a5a" stroke-opacity=".25"/>
+            <g id="deityText" fill="#d39a66" font-family="Noto Serif TC,serif" font-weight="900" font-size="28" text-anchor="middle" filter="url(#carve)"></g>
+            <!-- mid ring -->
+            <rect x="34" y="132" width="172" height="20" rx="7" fill="url(#woodLip)"/>
+            <rect x="34" y="132" width="172" height="20" rx="7" fill="#000" filter="url(#grain)" opacity=".6"/>
+            <!-- plaque band -->
+            <rect x="40" y="88" width="160" height="46" fill="url(#wood)"/>
+            <rect x="40" y="88" width="160" height="46" fill="#000" filter="url(#grain)"/>
+            <rect x="48" y="93" width="144" height="36" rx="2" fill="#1e0e07" opacity=".55"/>
+            <g fill="#e0a877" font-family="Noto Serif TC,serif" font-weight="900" font-size="23" text-anchor="middle" filter="url(#carve)">
+              <text x="66" y="119">五</text><text x="93" y="119">甲</text><text x="120" y="119">港</text><text x="147" y="119">口</text><text x="174" y="119">宮</text>
+            </g>
+            <!-- top ring (mouth) -->
+            <rect x="34" y="70" width="172" height="22" rx="7" fill="url(#woodLip)"/>
+            <rect x="34" y="70" width="172" height="22" rx="7" fill="#000" filter="url(#grain)" opacity=".6"/>
+            <ellipse cx="120" cy="72" rx="78" ry="5" fill="#1a0b05" opacity=".55"/>
+          </g>
+
+          <!-- lid -->
+          <g id="lid">
+            <rect x="26" y="34" width="188" height="40" rx="20" fill="url(#woodLip)"/>
+            <rect x="26" y="34" width="188" height="40" rx="20" fill="#000" filter="url(#grain)" opacity=".7"/>
+            <rect x="62" y="20" width="116" height="18" rx="9" fill="url(#wood)"/>
+            <ellipse cx="120" cy="22" rx="52" ry="4" fill="#c7875a" opacity=".35"/>
+          </g>
+        </svg>
+      </button>
+      <div class="shake-count" id="shakeCount" aria-live="polite">點擊籤筒開始搖籤</div>
+    </div>
+    <button class="ghost" type="button" data-go="3" id="s4Back">← 改請示其他神明</button>
+  </section>
+
+  <!-- 5 籤詩 -->
+  <section class="panel" id="s5" hidden>
+    <div class="slip" id="slip"></div>
+    <div class="row">
+      <button class="btn" type="button" id="againBtn">再求一籤</button>
+      <button class="ghost" type="button" data-go="1">更換信眾資料</button>
+    </div>
+    <p class="note">籤詩僅供參考與心靈指引。健康方面若有不適，請務必就醫。</p>
+  </section>
+
+  <!-- 管理：信眾紀錄 -->
+  <section class="panel" id="sAdmin" hidden>
+    <div class="row"><h2>信眾紀錄</h2><button class="ghost" type="button" id="adminClose">關閉</button></div>
+    <p class="lede" id="adminInfo">只有您（本頁擁有者）看得到這份表格。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>時間</th><th>姓名</th><th>出生日期</th><th>性別</th><th>電話</th><th>類別</th><th>神明</th><th>時令</th><th>籤號</th><th>籤等</th></tr></thead>
+      <tbody id="adminBody"><tr><td colspan="10" class="empty">讀取中…</td></tr></tbody>
+    </table></div>
+    <div class="row"><button class="btn" type="button" id="csvBtn" hidden>下載 CSV 表格</button><span class="note" id="csvMsg"></span></div>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
