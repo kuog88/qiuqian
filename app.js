@@ -23,13 +23,25 @@ function go(n){
 document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g&&!state.busy)go(+g.dataset.go)});
 
 const today=todayTW();$("#fBirth").max=`${today.y}-${String(today.m).padStart(2,"0")}-${String(today.d).padStart(2,"0")}`;
+/* 出生年月日：年（附民國）／月／日下拉選單，組合成 YYYY-MM-DD 存進隱藏欄位 */
+(()=>{
+  const Y=$("#bY"),M=$("#bM"),D=$("#bD"),add=(sel,v,t)=>{const o=document.createElement("option");o.value=v;o.textContent=t;sel.appendChild(o)};
+  for(let y=1920;y<=today.y;y++) add(Y,y,y>=1912?`民國${y-1911}年（${y}年）`:`${y}年`);
+  for(let m=1;m<=12;m++) add(M,m,`${m} 月`);
+  const fillDays=()=>{const y=+Y.value||2000,m=+M.value||1,n=new Date(y,m,0).getDate(),keep=+D.value;
+    D.length=1;for(let d=1;d<=n;d++) add(D,d,`${d} 日`);if(keep&&keep<=n)D.value=keep;};
+  const sync=()=>{$("#fBirth").value=(Y.value&&M.value&&D.value)?`${Y.value}-${String(M.value).padStart(2,"0")}-${String(D.value).padStart(2,"0")}`:"";};
+  Y.addEventListener("change",()=>{fillDays();sync()});M.addEventListener("change",()=>{fillDays();sync()});D.addEventListener("change",sync);
+  fillDays();
+})();
 $("#profileForm").addEventListener("submit",e=>{
   e.preventDefault();
   const name=$("#fName").value.trim(), birth=$("#fBirth").value, phone=$("#fPhone").value.trim();
   const g=document.querySelector("input[name=gender]:checked");
   let err="";
   if(!name) err="請填寫姓名。";
-  else if(!birth||birth<"1900-01-01"||birth>$("#fBirth").max) err="請選擇正確的出生日期。";
+  else if(!birth) err="請選擇出生的年、月、日。";
+  else if(birth>$("#fBirth").max) err="出生日期不能晚於今天，請重新選擇。";
   else if(!/^[0-9+\-\s()]{8,20}$/.test(phone)) err="請填寫正確的電話號碼（8 碼以上數字）。";
   else if(!g) err="請選擇性別。";
   else if(!$("#fConsent").checked) err="請勾選同意資料紀錄。";
@@ -72,7 +84,7 @@ $("#tubeBtn").addEventListener("click",async()=>{
   $("#shakeCount").textContent="開蓋…";
   await $("#lid").animate([{transform:"translate(0,0) rotate(0)",opacity:1},{transform:"translate(0,-34px) rotate(-4deg)",opacity:1,offset:.4},{transform:"translate(90px,-60px) rotate(24deg)",opacity:0}],
     {duration:reduce?200:900,easing:"ease-in-out",fill:"forwards"}).finished;
-  await $("#stick").animate([{transform:"translateY(0)"},{transform:"translateY(-118px)"}],{duration:reduce?200:900,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"}).finished;
+  await $("#stick").animate([{transform:"translateY(0)"},{transform:"translateY(-100px)"}],{duration:reduce?200:900,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"}).finished;
   $("#shakeCount").innerHTML=`得 <b>第${cnNum(poem.no)}籤</b>`;
   await wait(reduce?300:1100);
   renderResult(poem,a); go(5); state.busy=false;

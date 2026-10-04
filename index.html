@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" translate="no">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="google" content="notranslate">
 <meta name="description" content="五甲港口宮線上求籤：依節氣時令、生辰八字、姓名五格推算出籤。">
 <title>五甲港口宮線上求籤</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -183,9 +184,90 @@ td.num{font-variant-numeric:tabular-nums}
 
 @media (max-width:380px){.grid2{gap:8px}.choice{padding:14px 10px}.choice b{font-size:21px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ===== 長輩友善・手機優先：大字、高對比、大按鈕 ===== */
+:root{--muted:#5a4636}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--muted:#cdb9a0}}
+:root[data-theme="dark"]{--muted:#cdb9a0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-size:18px;line-height:1.8;padding-inline:14px}
+.wrap{gap:18px}
+.head{padding-top:14px}
+.plaque .seal{width:52px;height:52px;font-size:26px}
+.plaque h1{font-size:27px}
+.plaque small{font-size:15px;letter-spacing:.12em}
+.rail li{font-size:15px;letter-spacing:.05em}
+.rail li::before{height:6px;border-radius:3px}
+.panel{padding:22px 18px;gap:20px;border-radius:16px}
+.panel h2{font-size:26px;letter-spacing:.06em}
+.panel .lede{font-size:18px;margin-top:-6px}
+.field{gap:8px}
+.field label,.field .lab{font-size:19px;font-weight:700;letter-spacing:.04em}
+.field input[type=text],.field input[type=tel],.field select{font:inherit;font-size:21px;min-height:58px;padding:12px 14px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);width:100%}
+.field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--fg) 50%),linear-gradient(135deg,var(--fg) 50%,transparent 50%);background-position:calc(100% - 22px) 52%,calc(100% - 15px) 52%;background-size:7px 7px;background-repeat:no-repeat;padding-right:40px}
+.field input:focus-visible,.field select:focus-visible{outline:3px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+.dob{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dob select:first-child{grid-column:1/-1}
+.hint{font-size:16px;line-height:1.6}
+.seg{gap:12px}
+.seg label{font-size:22px;min-height:60px;border-width:2px;border-radius:10px;gap:10px}
+.seg input{width:24px;height:24px}
+.consent{font-size:17px;gap:12px;line-height:1.6;align-items:flex-start;padding:4px 0;cursor:pointer}
+.consent input{width:26px;height:26px;flex:none;margin-top:2px}
+.err{font-size:18px;font-weight:700}
+.btn{font-size:22px;min-height:62px;padding:14px 18px;border-radius:12px;letter-spacing:.15em}
+.row{flex-direction:column;align-items:stretch;gap:12px}
+.row .btn{width:100%}
+.ghost{font-size:18px;padding:10px 4px;min-height:48px;color:var(--fg);text-decoration:underline;text-underline-offset:4px;align-self:center}
+.grid2{gap:12px}
+.choice{padding:18px 14px;min-height:118px;border-width:2px;border-radius:14px;justify-content:center}
+.choice b{font-size:30px}
+.choice span{font-size:15.5px;line-height:1.5;color:var(--muted)}
+.choice.deity b{font-size:23px}
+.choice .seal{width:50px;height:50px;font-size:23px}
+.choice:active{transform:scale(.98);border-color:var(--red)}
+.tubebox{width:min(280px,78vw)}
+.shake-count{font-size:21px}
+.shake-count b{font-size:28px}
+.pray{font-size:20px;line-height:1.9}
+.slip-no{font-size:28px}
+.slip-no small{font-size:16px;line-height:1.6;margin-top:4px}
+.level{font-size:26px;padding:8px 12px}
+.poem div{font-size:clamp(28px,8.6vw,38px);gap:clamp(14px,4.5vw,24px)}
+.sec h3{font-size:20px;letter-spacing:.15em;margin-bottom:8px}
+.sec p{font-size:18.5px;line-height:1.85}
+.chips li{font-size:16px;padding:4px 12px}
+.meter{font-size:17px}
+.meter .bar{height:10px;border-radius:5px}
+.meter b{font-size:20px}
+.yiji h4{font-size:24px}
+.yiji ul{font-size:18px;line-height:1.7}
+.note{font-size:16px;line-height:1.7}
+.saved{font-size:16px;font-weight:700}
+.grid5{grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px}
+.grid5 div{padding:8px 4px}
+.grid5 small{font-size:14px}
+.grid5 b{font-size:22px}
+.grid5 em{font-size:14px}
+.pillars small{font-size:14px}
+.pillars b{font-size:23px}
+.season li{font-size:17px;padding:4px 12px}
+.stage-card{font-size:17.5px;padding:14px;gap:6px}
+.stage-top b{font-size:21px}
+.stage-top span,.stage-num{font-size:15.5px}
+.stage-desc{font-size:20px}
+.years li{padding:12px 14px;gap:4px 14px}
+.years .yr b{font-size:21px}
+.years .yr span{font-size:15.5px}
+.ytags i{font-size:16px;padding:2px 10px}
+.years li p{font-size:17.5px;line-height:1.75}
+table{font-size:15px}
+th,td{padding:10px 12px}
+.admin-btn{font-size:16px;padding:8px 16px;min-height:44px}
+@media (max-width:360px){body{padding-inline:12px}.choice b{font-size:26px}.choice.deity b{font-size:20px}.panel{padding:20px 14px}}
 [hidden]{display:none!important}
 body{margin:0}
 img{max-width:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 </style>
 </head>
 <body>
@@ -210,8 +292,13 @@ img{max-width:100%}
       <div class="field"><label for="fName">姓名</label>
         <input type="text" id="fName" autocomplete="name" maxlength="20" placeholder="例：陳美玲">
         <span class="hint">請填中文本名，用於姓名學五格推算；填暱稱也能求籤，但會略過姓名學。</span></div>
-      <div class="field"><label for="fBirth">出生年月日（國曆）</label>
-        <input type="date" id="fBirth" min="1900-01-01"></div>
+      <div class="field"><span class="lab" id="bLab">出生年月日（國曆）</span>
+        <div class="dob" role="group" aria-labelledby="bLab">
+          <select id="bY" aria-label="出生年"><option value="">請選擇出生年</option></select>
+          <select id="bM" aria-label="出生月"><option value="">月</option></select>
+          <select id="bD" aria-label="出生日"><option value="">日</option></select>
+        </div>
+        <input type="hidden" id="fBirth"></div>
       <div class="field"><label for="fPhone">電話</label>
         <input type="tel" id="fPhone" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="例：0912345678"></div>
       <div class="field"><span class="lab" id="gLab">性別</span>
@@ -257,7 +344,7 @@ img{max-width:100%}
     <p class="pray" id="prayLine"></p>
     <div class="stage">
       <button class="tubebox" id="tubeBtn" type="button" aria-label="點擊籤筒開始搖籤">
-        <svg viewBox="0 -130 240 540" aria-hidden="true">
+        <svg viewBox="0 -100 240 510" aria-hidden="true">
           <defs>
             <linearGradient id="wood" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0" stop-color="#3b1f12"/><stop offset=".22" stop-color="#7a4426"/>
@@ -275,7 +362,7 @@ img{max-width:100%}
               <feComposite in2="SourceGraphic" operator="in"/>
             </filter>
             <filter id="carve"><feDropShadow dx="0" dy="1.2" stdDeviation=".4" flood-color="#000" flood-opacity=".7"/></filter>
-            <clipPath id="mouth"><rect x="40" y="-140" width="160" height="230"/></clipPath>
+            <clipPath id="mouth"><rect x="40" y="-110" width="160" height="200"/></clipPath>
           </defs>
 
           <g id="tubeAll">
