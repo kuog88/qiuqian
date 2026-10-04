@@ -55,7 +55,28 @@ $("#deityGrid").addEventListener("click",e=>{const b=e.target.closest("[data-dei
   const p=state.profile,[y,m,d]=p.birth.split("-").map(Number), s=QQ.seasonOf(QQ.sunLon(today.y,today.m,today.d));
   $("#s4Title").textContent=`向${state.deity}求${CAT[state.cat]}籤`;
   $("#prayLine").textContent=`時值${s.name}季${s.term}，弟子${p.name}，${y}年${m}月${d}日生，誠心請示${state.deity}，${CAT[state.cat]}之事，請賜靈籤。`;
-  go(4)});
+  playIntro(state.deity).then(()=>go(4))});
+
+/* ---------- 神明過場影片：選完神明後全螢幕播放，播完進入搖籤 ---------- */
+const INTRO_VIDEO={"濟公師父":"video/jigong.mp4","天上聖母":"video/mazu.mp4","三太子":"video/taizi.mp4","土地公":"video/tudigong.mp4"};
+function playIntro(deity){
+  return new Promise(res=>{
+    const ov=$("#intro"),v=$("#introVid"),src=INTRO_VIDEO[deity];
+    if(!src){res();return}
+    let done=false,t=0;
+    const finish=()=>{if(done)return;done=true;clearTimeout(t);try{v.pause()}catch(_){}
+      ov.classList.add("out");
+      setTimeout(()=>{ov.hidden=true;ov.classList.remove("out");v.removeAttribute("src");try{v.load()}catch(_){};state.busy=false;res()},matchMedia("(prefers-reduced-motion: reduce)").matches?0:400)};
+    state.busy=true;
+    v.poster=src.replace(".mp4",".jpg");v.src=src;
+    $("#introCap").textContent=`${deity}　降臨`;
+    ov.hidden=false;
+    v.onended=finish;v.onerror=finish;$("#introSkip").onclick=finish;
+    t=setTimeout(finish,10000); // 網路太慢或影片出錯時，最多等 10 秒就直接進入搖籤
+    const p=v.play(); // 在點擊當下播放，手機才允許有聲音
+    if(p&&p.catch)p.catch(()=>{v.muted=true;v.play().catch(finish)});
+  });
+}
 
 /* ---------- 籤筒動畫 ---------- */
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;

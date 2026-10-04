@@ -278,6 +278,17 @@ th,td{padding:10px 12px}
 #s4{gap:14px}
 .shake-count:empty{display:none}
 #shakeBtn{width:100%}
+/* 神明過場影片 */
+.intro{position:fixed;inset:0;z-index:50;background:#000;display:flex;align-items:center;justify-content:center;animation:introIn .35s ease-out}
+.intro.out{animation:introOut .4s ease-in forwards}
+.intro video{width:100%;height:100%;object-fit:contain;background:#000}
+.intro-cap{position:absolute;left:0;right:0;top:calc(28px + env(safe-area-inset-top,0px));text-align:center;color:#f6e6c6;font-family:var(--f-carve);font-weight:900;font-size:26px;letter-spacing:.35em;text-shadow:0 2px 10px #000,0 0 22px rgba(0,0,0,.8);opacity:0;animation:capIn 1s .3s ease-out forwards;pointer-events:none}
+.intro-skip{position:absolute;right:16px;bottom:calc(24px + env(safe-area-inset-bottom,0px));font:inherit;font-size:19px;min-height:48px;padding:8px 22px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.55);cursor:pointer}
+.intro-skip:focus-visible{outline:3px solid #f6e6c6;outline-offset:2px}
+@keyframes introIn{from{opacity:0}to{opacity:1}}
+@keyframes introOut{to{opacity:0}}
+@keyframes capIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.intro,.intro.out,.intro-cap{animation:none;opacity:1}}
 @media (max-width:360px){body{padding-inline:12px}.choice b{font-size:26px}.choice.deity b{font-size:20px}.panel{padding:20px 14px}}
 [hidden]{display:none!important}
 body{margin:0}
@@ -461,6 +472,13 @@ img{max-width:100%}
     </table></div>
     <div class="row"><button class="btn" type="button" id="csvBtn" hidden>下載 CSV 表格</button><span class="note" id="csvMsg"></span></div>
   </section>
+
+  <!-- 神明過場影片 -->
+  <div class="intro" id="intro" hidden>
+    <video id="introVid" playsinline webkit-playsinline preload="none" aria-label="神明降臨動畫"></video>
+    <div class="intro-cap" id="introCap"></div>
+    <button class="intro-skip" id="introSkip" type="button">略過 ›</button>
+  </div>
 </div>
 
 <script src="config.js"></script>
